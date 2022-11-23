@@ -1,6 +1,6 @@
 import type { AWS } from '@serverless/typescript';
 
-import hello from '@functions/hello';
+import { app } from './src/functions';
 
 const serverlessConfiguration: AWS = {
   service: 'serverless-project',
@@ -19,7 +19,9 @@ const serverlessConfiguration: AWS = {
     },
   },
   // import the function via paths
-  functions: { hello },
+  functions: {
+    app,
+  },
   package: { individually: true },
   custom: {
     esbuild: {
@@ -31,6 +33,9 @@ const serverlessConfiguration: AWS = {
       define: { 'require.resolve': undefined },
       platform: 'node',
       concurrency: 10,
+      watch: {
+        pattern: ['src/**/*.ts'],
+      },
     },
   },
 };
