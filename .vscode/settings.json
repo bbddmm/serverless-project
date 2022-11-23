@@ -45,6 +45,8 @@
     "preinstall",
     "commitlint",
     "technote",
-    "reviewdog"
+    "reviewdog",
+    "middyfy",
+    "vendia"
   ]
 }
