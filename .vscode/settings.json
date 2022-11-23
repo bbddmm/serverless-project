@@ -38,5 +38,5 @@
   "files.trimTrailingWhitespace": true,
   "typescript.enablePromptUseWorkspaceTsdk": true,
   "typescript.tsdk": "node_modules/typescript/lib",
-  "cSpell.words": ["typesync", "openapi", "esbuild"]
+  "cSpell.words": ["typesync", "openapi", "esbuild", "preinstall", "commitlint"]
 }
