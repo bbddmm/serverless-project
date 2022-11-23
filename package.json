@@ -4,7 +4,14 @@
   "description": "Serverless aws-nodejs-typescript template",
   "main": "serverless.ts",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepare": "husky install",
+    "format": "prettier --write './**/*.{js,jsx,ts,tsx,json,md,yml,yaml}'",
+    "fix": "run-s format fix:es fix:style",
+    "fix:es": "eslint --fix './**/*.{js,jsx,ts,tsx}'",
+    "lint": "run-p lint:*",
+    "lint:es": "eslint './**/*.{js,jsx,ts,tsx}'",
+    "lint:prettier": "prettier --check './**/*.{js,jsx,ts,tsx,json,md,yml,yaml}'",
+    "lint:conflict": "eslint-config-prettier './**/*.{js,jsx,ts,tsx,vue}'"
   },
   "engines": {
     "node": ">=14.15.0"
