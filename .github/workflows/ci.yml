@@ -1,0 +1,57 @@
+name: ci
+
+on: pull_request
+
+jobs:
+  ci:
+    name: ci
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Check diff
+        uses: technote-space/get-diff-action@v6
+        id: check-diff
+        with:
+          PATTERNS: |
+            src/**/*.{ts,js}
+            tests/**/*.{ts,js}
+
+      - uses: reviewdog/action-setup@v1
+        if: steps.check-diff.outputs.diff
+        with:
+          reviewdog_version: latest
+
+      - name: Setup Node.js
+        if: steps.check-diff.outputs.diff
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          cache: 'npm'
+          cache-dependency-path: package-lock.json
+
+      - name: npm install
+        if: steps.check-diff.outputs.diff
+        run: npm ci
+
+      - name: run prettier
+        if: steps.check-diff.outputs.diff
+        uses: EPMatt/reviewdog-action-prettier@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          level: warning
+          prettier_flags: './**/*.{ts,js,json,yml,yaml}'
+          fail_on_error: 'true'
+
+      - name: run eslint
+        if: steps.check-diff.outputs.diff
+        uses: reviewdog/action-eslint@v1
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-pr-review
+          eslint_flags: './**/*.{ts,js}'
+          fail_on_error: 'true'
+
+    env:
+      REVIEWDOG_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
